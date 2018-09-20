@@ -85,6 +85,4 @@ int proverka(int x,unsigned long long poz,unsigned long long *&TRstr,int flag)
               return 0;
             }
        }
-		
-	
 }
