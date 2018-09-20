@@ -1,0 +1,94 @@
+#include <iostream>
+#include <stdlib.h>
+#include <cstring>
+#include <fstream>
+
+using namespace std;
+void perevod (unsigned long long *&TRstr, char *&ALLstr, const unsigned long long MAX_LENGTH,int k);
+int proverka(int x,unsigned long long *&TRstr,int flag);
+
+int main()
+{
+	setlocale(LC_ALL,"Russian");
+	
+	const unsigned long long MAX_LENGTH=2000072;
+	char *ALLstr=new char[MAX_LENGTH];								//строковый вассив всего файла
+	unsigned long long *TRstr=new unsigned long long[MAX_LENGTH];	//массив с числами всего файла
+
+	int k=2,x=0,flag=0;
+	unsigned p = 0;
+
+	ifstream in ("D:\\ИГУ\\Программирование\\e2mil.txt"); 
+	if (!in.is_open())
+	{ 
+            cout<< "Невозможно открыть файл. "<<endl; 
+            return 1; 
+       } 
+	else
+	{
+		cout<<"Файл открыт"<<endl;
+	}
+	
+       while( in.getline( ALLstr + p, MAX_LENGTH - p) ) //читаем все знаки
+	{
+          p = strlen(ALLstr) - 1;
+       }
+	//переводим все символы в число и записываем их в новый массив 
+	perevod (*&TRstr,*&ALLstr, MAX_LENGTH,k);
+	//поиск функций
+	proverka(x,*&TRstr,flag);	
+	
+       in.close();
+	delete [] TRstr;
+	delete [] ALLstr;
+	
+	system("pause");
+	return 0;
+}
+
+void perevod(unsigned long long *&TRstr, char *&ALLstr, const unsigned long long MAX_LENGTH,int k)
+{
+	for(int i=0;i<MAX_LENGTH ;i++)	
+ 	{
+		TRstr[i]=ALLstr[k]-'0';
+		k++;
+	}
+}
+
+int proverka(int x,unsigned long long *&TRstr,int flag)
+{
+	unsigned int sum=0;
+	bool theend=true;
+	cout<<"Найдены следующие числа : "<<endl;
+
+	while(theend==true)
+	{
+		for(int j=x;j<x+10;j++)
+ 		{
+			sum=sum+TRstr[j];
+		}
+		if(sum == 49)	
+		{	
+			flag++;	
+			cout<<"F("<<flag<<") = ";
+			for(int i=x;i<x+10;i++)
+			{
+				cout<<TRstr[i];
+			}
+			cout<<endl;
+			x++;	//смещаем позицию
+			sum=0;	//зануляем сумму
+		}
+		else
+		{
+			x++;
+			sum=0;
+		}
+		if(flag==5)
+		{
+			 theend=false;
+		}
+	}
+	return 0;
+	
+}
