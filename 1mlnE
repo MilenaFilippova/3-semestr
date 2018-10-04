@@ -1,15 +1,15 @@
 #include <iostream>
 #include <math.h>
 #include <time.h> 
-#include <typedef>
 
-int mytype;
 
-void Sum(int *y,int *x,int size,int N);
-void setNumber(int *x,int n,int k);
-void Div (int *x,int size,int d,int N);
-int IsZero (int *x,int n);
-void print(int *y,int size);
+typedef int mytype;
+
+void Sum(mytype *y,mytype *x,mytype size,mytype N);
+void setNumber(mytype *x,mytype n,mytype k);
+void Div (mytype *x,mytype size,mytype d,mytype N);
+int IsZero (mytype *x,mytype n);
+void print(mytype *y,mytype size);
 
 using namespace std;
 
@@ -17,13 +17,13 @@ int main()
 {
 	setlocale(LC_ALL, "Russian");
 
-    int N=10000;	//основание системы счисления
-    int LN=((int)log10((double)N));	//кол-во десятичных разрядов,кот. можно храть в эл.массива с основанием N
-    int digit = 1000000; //количество десятичных разрядов 
-    int n=1+digit/LN;  //количество эл-тов массива
-    int *e=new int[n];
-    int *b=new int[n];
-    int k=1;	
+    mytype N=10000;	//основание системы счисления
+    mytype LN=((int)log10((double)N));	//кол-во десятичных разрядов,кот. можно храть в эл.массива с основанием N
+    mytype digit = 1000000; //количество десятичных разрядов 
+    mytype n=1+digit/LN;  //количество эл-тов массива
+    mytype *e=new int[n];
+    mytype *b=new int[n];
+    mytype k=1;	
 
     time_t start,end;
     setNumber (e,n,1);	//пишем на первое место 1 ,остальное заплняем нулями
@@ -45,7 +45,7 @@ int main()
 
 }
 
-void setNumber(int *x,int n,int k)	////пишет на первое место 1 ,остальное заплняет нулями
+void setNumber(mytype *x,mytype n,mytype k)	////пишет на первое место 1 ,остальное заплняет нулями
 {
 	x[0]=k;
 	for(int i=1;i<n;i++)
@@ -56,7 +56,7 @@ void setNumber(int *x,int n,int k)	////пишет на первое место 1
 }
 
 
-int IsZero (int *x,int n)	//если хотябы один эл. массива= 0,то возвращает 0 
+int IsZero (mytype *x,mytype n)	//если хотябы один эл. массива= 0,то возвращает 0 
 {
 	for(int i=0;i<n;i++)
 	{
@@ -70,10 +70,10 @@ int IsZero (int *x,int n)	//если хотябы один эл. массива=
 
 
 
-void Div (int *x,int size,int d,int N)	//b=b/k
+void Div (mytype *x,mytype size,mytype d,mytype N)	//b=b/k
 {
-        int carry=0;
-        int q,p;
+        mytype carry=0;
+        mytype q,p;
         for(int i=0;i<size;i++)
         {
               p=x[i]+carry*N;
@@ -83,9 +83,9 @@ void Div (int *x,int size,int d,int N)	//b=b/k
         }
 }
 
-void Sum(int *y,int *x,int size,int N)	//e=e+b
+void Sum(mytype *y,mytype *x,mytype size,mytype N)	//e=e+b
 {
-	int carry=0;
+	mytype carry=0;
 	for(int i=size-1;i>=0;i--)
 	{
 		y[i]+=x[i]+carry;
@@ -103,10 +103,10 @@ void Sum(int *y,int *x,int size,int N)	//e=e+b
 }
 
 
-void print(int *y,int size)
+void print(mytype *y,mytype size)
 {
 	cout<<"e= ";
-	int i;
+	mytype i;
 	for(i=0;i<size;i++)
 	{
 		cout<<y[i];
