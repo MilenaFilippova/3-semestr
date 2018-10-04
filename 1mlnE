@@ -1,0 +1,116 @@
+#include <iostream>
+#include <math.h>
+#include <time.h> 
+#include <typedef>
+
+int mytype;
+
+void Sum(int *y,int *x,int size,int N);
+void setNumber(int *x,int n,int k);
+void Div (int *x,int size,int d,int N);
+int IsZero (int *x,int n);
+void print(int *y,int size);
+
+using namespace std;
+
+int main()
+{
+	setlocale(LC_ALL, "Russian");
+
+    int N=10000;	//основание системы счисления
+    int LN=((int)log10((double)N));	//кол-во десятичных разрядов,кот. можно храть в эл.массива с основанием N
+    int digit = 1000000; //количество десятичных разрядов 
+    int n=1+digit/LN;  //количество эл-тов массива
+    int *e=new int[n];
+    int *b=new int[n];
+    int k=1;	
+
+    time_t start,end;
+    setNumber (e,n,1);	//пишем на первое место 1 ,остальное заплняем нулями
+    setNumber (b,n,1);
+    start=clock();
+    while (!IsZero(b,n))	
+    {
+        Div(b,n,k,N);
+        Sum(e,b,k,N);
+        k++;
+
+    }
+    print(e,n);	//выводим знаки
+    end=clock();
+    cout<<endl<<"Время выполнения: "<<(end-start)/10000<<" мин"<<endl;
+    
+    system("pause");
+      return 0;
+
+}
+
+void setNumber(int *x,int n,int k)	////пишет на первое место 1 ,остальное заплняет нулями
+{
+	x[0]=k;
+	for(int i=1;i<n;i++)
+	{
+		x[i]=0;   
+	}
+     
+}
+
+
+int IsZero (int *x,int n)	//если хотябы один эл. массива= 0,то возвращает 0 
+{
+	for(int i=0;i<n;i++)
+	{
+		if(x[i])
+		{
+			return 0;   
+		}
+	}
+	return 1;
+}
+
+
+
+void Div (int *x,int size,int d,int N)	//b=b/k
+{
+        int carry=0;
+        int q,p;
+        for(int i=0;i<size;i++)
+        {
+              p=x[i]+carry*N;
+              q=p/d;	//деление "столбиком"
+              carry=p-q*d;
+              x[i]=q;
+        }
+}
+
+void Sum(int *y,int *x,int size,int N)	//e=e+b
+{
+	int carry=0;
+	for(int i=size-1;i>=0;i--)
+	{
+		y[i]+=x[i]+carry;
+		if(y[i]>=N)
+		{
+			carry=1;
+			y[i]-=N;
+		}
+		else
+		{
+			carry=0;   
+		}
+ }
+    
+}
+
+
+void print(int *y,int size)
+{
+	cout<<"e= ";
+	int i;
+	for(i=0;i<size;i++)
+	{
+		cout<<y[i];
+	}
+	
+}
+//не доделано 
