@@ -1,0 +1,282 @@
+#include <iostream>
+#include <fstream>
+#include "rational.h"
+
+using namespace std;
+
+Rational :: Rational()
+{
+	numer=0;
+	denom=1;
+}
+
+
+Rational :: Rational(int a)
+{
+	numer=a;
+	denom=1;
+}
+
+
+Rational :: Rational(int a,int b)
+{
+	numer=a;
+	denom=b;  
+}
+
+
+Rational Rational :: operator +(const Rational &r)const 
+{
+	Rational temp;
+	temp.denom = denom * r.denom;
+	temp.numer = numer * r.denom + denom * r.numer;
+	return temp;
+}
+
+Rational Rational :: operator +(const int &a)const 
+{
+	Rational temp;
+	temp.denom = denom ;
+	temp.numer = numer + denom * a;
+	return temp;
+}
+
+Rational Rational :: operator +=(const Rational &r)const
+{
+	Rational temp;
+	temp.numer = (numer*r.denom+denom*r.numer);
+	temp.denom *= r.denom;
+	return temp;
+}
+
+Rational Rational :: operator -()const
+{
+	Rational k(-numer,denom);
+	return k;
+}
+
+Rational Rational :: operator -(const Rational &r)const 
+{
+	Rational temp;
+	temp.denom = denom * r.denom;
+	temp.numer = numer * r.denom - denom * r.numer;
+	return temp;
+}
+
+Rational Rational :: operator - (const int &a)const 
+{
+	Rational temp;
+	temp.denom = denom ;
+	temp.numer = numer - denom * a;
+}
+
+
+Rational Rational :: operator *(const int &a)const 
+{
+	Rational temp;
+	temp.numer = numer * a;
+	temp.denom = denom ;
+	return temp;
+}
+
+Rational Rational :: operator *(const double &a)const 
+{
+	Rational temp;
+	temp.numer = numer * a;
+	temp.denom = denom ;
+	return temp;
+}
+
+Rational Rational :: operator *(const Rational &r)const 
+{
+	Rational temp;
+	temp.denom = denom * r.denom;
+	temp.numer = numer * r.numer;
+
+	return temp;
+}
+
+
+Rational Rational :: operator /(const Rational &r)const 
+{
+	Rational temp;
+	temp.denom = denom * r.numer;
+	temp.numer = numer * r.denom;
+
+	return temp;
+}
+
+Rational Rational :: operator /(const int &a)const 
+{
+	Rational temp;
+	temp.numer = numer;
+	temp.denom = denom * a;
+	return temp;
+}
+
+//операторы сравнения
+bool Rational :: operator >(const Rational &r)const 
+{
+	return (numer*r.denom>denom*r.numer);
+}
+
+bool Rational :: operator <(const Rational &r)const 
+{
+	return (numer*r.denom<denom*r.numer);
+}
+
+bool  Rational ::  operator >(const int &a)const
+{
+	return (numer>denom*a);
+}
+bool  Rational ::  operator <(const int &a)const
+{
+	return (numer<denom*a);
+}
+
+
+Rational Rational :: operator -= (const Rational& r) 
+{
+	return (*this +=(-r));
+}
+
+
+//операторы инкремента
+Rational& Rational :: operator ++ () //префикс
+{
+	numer += denom;
+	return *this;
+}
+
+
+
+Rational& Rational :: operator ++ (int) //постфикс
+{
+	Rational r(*this);
+	numer += denom;
+	return *this;
+}
+
+//операторы сравнения
+bool Rational::operator ==(const Rational& r) const
+{
+	return (numer==r.numer) && (denom==r.denom);
+}
+bool Rational::operator !=(const Rational& r) const
+{
+	return !(*this==r);
+}
+
+//операторы преобразования типов
+Rational::operator int() const
+{
+	return numer/denom;
+}
+
+Rational::operator double() const
+{
+	return ((double)numer)/denom;
+}
+
+
+
+
+void Rational::simplify()
+{
+	if (denom < 0)
+	{
+		numer = -numer;
+		denom = -denom;
+	}
+	for (int i=2; i<=abs(denom) && i<=abs(numer); i++)
+	{
+		if (numer % i == 0 && denom % i == 0)
+		{
+			numer /= i;
+			denom /= i;
+			i--;
+		}
+	}
+}
+
+
+
+
+Rational Rational :: sqrtr(const Rational &r) const
+{	 
+	 int flag=0;
+	 int a=r.numer;
+	 int b=r.denom;
+	 int Arr[5]={0};
+	 int Arrtwo[5]={0};
+	 int Arrthree[5]={0};
+	 Arr[0]=1;
+	 Arrtwo[0]=1;
+	
+	 for(int n=1;n<5;n++)
+	 {
+		 Arr[n]=0.5*(Arr[n-1]+(a/Arr[n-1]));
+		 if(Arr[n]==Arr[n-1] )
+		 {
+			 cout<<endl<<"Arr[n]="<<Arr[n]<<Arr[n-1]<<Arr[n-1]<<endl;
+			 flag++;
+			 if(flag>1)
+			 {
+				 a=Arr[n];//переприсваем числителю новое найденое значение 
+				 break;
+			 }
+
+		 }
+		 break;
+	 }
+	 flag=0;
+	 for(int k=1;k<5;k++)
+	 {
+		 Arrtwo[k]=0.5*(Arrtwo[k-1]+(b/Arrtwo[k-1]));
+		 if(Arrtwo[k]==Arrtwo[k-1] )
+		 {
+			 flag++;
+			 if(flag>1)
+			 {
+				 b=Arrtwo[k];//переприсваем числителю новое найденое значение 
+				 break;
+			 }
+		 }
+		 break;
+
+	 }
+	 Rational temp;
+	 temp.numer=a;
+	 temp.denom=b;
+	 cout<<"p= "<<endl;
+	 temp.print();
+	 //для найденых значений
+	 for(int l=1;l<=2;l++)
+	 {
+		temp=(temp+(r/temp))*0.5;
+	 }
+
+	 return  temp;
+}
+
+
+void Rational ::print()
+{
+	std::cout<<numer<<"/"<<denom<<'\n';
+}
+
+
+
+//операторы ввода-вывода r
+ifstream operator >>(ifstream& in, const  Rational& r)const
+{
+	in>>r.numer>>r.denom;
+	return in;
+}
+ofstream operator <<(ofstream& out, const Rational& r)const
+{
+	out<<r.numer<<"/"<<r.denom;
+	return out;
+}
+
+
