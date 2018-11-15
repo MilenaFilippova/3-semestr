@@ -62,6 +62,7 @@ Time :: Time(char* str)
 			for(int j=0;j<i;j++ )
 			{
 				chas[j]=str[j];
+				
 			}
 			for(int k=i+1;k<=strlen(str);k++ )
 			{
@@ -87,8 +88,20 @@ Time :: Time(char* str)
 			hour=atoi(chas);
 			minutes=atoi(min);
 			seconds=atoi(sec);
+			
+			
 }
 
+int Time ::proverka()
+{
+	int k=1;
+	if(hour>23 || 	minutes>59  || seconds>59 || day>31 || month>12 || year>2018 ||
+		hour<0 || 	minutes<0  || seconds<0 || day<0 || month<0 || year<0)
+	{
+		k++;
+	}
+	return k;
+}
 
 Time Time:: operator +(const Time &t)const 
 {
@@ -131,4 +144,18 @@ void Time ::printall()
 	cout<<"  day="<<day<<"  month="<<month<<" year= " <<year<<
 		  "  hour="<<hour<<" minutes="<<minutes<<" seconds="<<seconds<<'\n';
 	cout<<"or "<<day<<"."<<month<<"."<<year<<"   "<<hour<<":"<<minutes<<":"<<seconds<<endl<<endl;
+
+
+}
+
+//операторы ввода-вывода 
+ifstream operator >>(ifstream& in, const  Time& t)const
+{
+	in>>t.day>>t.month>>t.year>>t.hour>>t.minutes>>t.seconds;
+	return in;
+}
+ofstream operator <<(ofstream& out, const Time& t)const
+{
+	out<<t.day<<"."<<t.month<<"."t.year<<"   "t.hour<<":"<<t.minutes<<":"<<t.seconds;;
+	return out;
 }
