@@ -20,15 +20,15 @@ class Field
 	public:
 		Field(bool isRedFirst);	// 
 		void clear(bool isRedFirst);			//очистка поля
-		bool makeTurn(int column);				//Выполнение хода
+		bool makeTurn(int column);			//Выполнение хода
 		bool isWon(bool red) const;
-		bool isOver() const;				  	  //Контроль окончания игры
+		bool isOver() const;				//Контроль окончания игры
 		Cell getCell(int i, int j) const;		
-		bool isRedTurnNow() const;				// Очередь хода
-		void checkWinner() const;				  // Определение победителя
+		bool isRedTurnNow() const;			// Очередь хода
+		void checkWinner() const;			// Определение победителя
 		Cell cells[FIELD_WIDTH][FIELD_HEIGHT];  // Двумерный массив для  хранения игрового поля
-		bool isRedTurn;							      // Очередь хода
-		Cell winner;							        // Кто выиграл
+		bool isRedTurn;					// Очередь хода
+		Cell winner;					// Кто выиграл
 		Cell start;
 		void printResult() const;
 		void print() const;
